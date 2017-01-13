@@ -15,13 +15,14 @@ import world.view.gameFrame;
 public class WorldControl
 {
 	private Map map;
-	private transient gameFrame frame;
+	private gameFrame frame;
 	private int health;
 	private int maxHealth;
 	private int width;
 	private int height;
 	private int posx;
 	private int posy;
+	private WorldPanel panel;
 
 	public WorldControl()
 	{
@@ -31,13 +32,11 @@ public class WorldControl
 		{
 			System.out.println("all good");
 			map = fh.readMap();
-			map.setControl(this);
-			map.getCurrentRoom().entered();
 		} else
 		{
 			map = new Map(this);
-			map.getCurrentRoom().getTile(new Dimension(4, 4)).setInhabited(true);
-			map.getCurrentRoom().entered();
+			map.setCurrentPos(new Dimension(5,3));
+			map.getCurrentRoom().getTile(new Dimension(4,4)).setInhabited(true);
 		}
 		if (fh.readData("windowData") != null)
 		{
@@ -99,16 +98,16 @@ public class WorldControl
 		}
 		health = 8;
 		maxHealth = 100;
+		frame = new gameFrame(this, width, height, posx, posy);
+		panel = (WorldPanel) frame.getPanel();
+		map.setControl(this);
+		map.getCurrentRoom().entered();
 	}
 
 	public void start()
 	{
-		frame = new gameFrame(this, width, height, posx, posy);
-		WorldPanel panel = (WorldPanel) frame.getPanel();
-		if (!System.getProperty("os.name").startsWith("Windows"))
-		{
 			panel.Render();
-		}
+		
 
 	}
 
@@ -214,7 +213,6 @@ public class WorldControl
 	}
 	public void updateRender()
 	{
-		WorldPanel panel = (WorldPanel) frame.getPanel();
 		panel.Render();
 	}
 }

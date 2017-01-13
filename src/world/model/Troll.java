@@ -7,10 +7,12 @@ import java.util.Random;
 
 public class Troll extends Monster 
 {
-	Random rand;
+	private Random rand;
+	private int count;
 	public Troll()
 	{
 		super();
+		count = 0;
 		rand = new Random();
 	}
 	
@@ -24,7 +26,8 @@ public class Troll extends Monster
 	@Override
 	public Dimension move(Room room,Dimension Position)
 	{
-		
+		if(count == 2){
+			count = 0;
 		ArrayList<Dimension> validPositions = new ArrayList<Dimension>();
 		if(checkDimension(new Dimension(Position.width+1,Position.height),room))
 		{
@@ -50,6 +53,11 @@ public class Troll extends Monster
 		}
 		else
 		{
+			return null;
+		}}
+		else
+		{
+			count ++;
 			return null;
 		}
 		

@@ -69,6 +69,7 @@ public class gameFrame extends JFrame
 			@Override
 			public void componentResized(ComponentEvent arg0)
 			{
+				panel.resized(controller.getFrame().getWidth(), controller.getFrame().getHeight());
 				if (controller.getFrame().getWidth() < (int) (Tile.getMinimumSize() * controller.getMap().getCurrentRoom().getSize().getWidth())
 				        || controller.getFrame().getHeight() < (int) (Tile.getMinimumSize() * controller.getMap().getCurrentRoom().getSize().getHeight()))
 				{
@@ -77,7 +78,7 @@ public class gameFrame extends JFrame
 					        (int) controller.getMap().getCurrentRoom().getSize().getHeight() * Tile.getMinimumSize()));
 				}
 
-				panel.resized(controller.getFrame().getWidth(), controller.getFrame().getHeight());
+				
 				controller.saveWindowData();
 
 			}

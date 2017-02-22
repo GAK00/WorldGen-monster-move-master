@@ -9,6 +9,7 @@ import world.model.FileHandler;
 import world.model.HealthBar;
 import world.model.Map;
 import world.model.MiniMap;
+import world.model.MusicBox;
 import world.view.WorldPanel;
 import world.view.gameFrame;
 
@@ -28,6 +29,9 @@ public class WorldControl
 	{
 
 		FileHandler fh = new FileHandler();
+		MusicBox music = new MusicBox(fh,"dank.wav",true);
+		//music.startThread();
+		//music.changeDc();
 		if (fh.readMap() != null)
 		{
 			System.out.println("all good");

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -15,7 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class FileHandler 
+public class FileHandler implements Serializable
 {
 
 	private File mainDirectory;
@@ -55,7 +56,19 @@ public class FileHandler
 			mainDirectory.mkdir();
 		}
 	}
-
+	
+	public String getDirectory()
+	{
+		try
+		{
+			return getParentDirectory()+"/GameData/";
+		} catch (UnsupportedEncodingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "";
+		}
+	}
 	private String getParentDirectory() throws UnsupportedEncodingException
 	{
 		String parentPath = "";

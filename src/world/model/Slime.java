@@ -10,12 +10,16 @@ public class Slime extends Monster
 	private Dimension playerPos;
 	private Random rand;
 	private int count;
+	MusicBox jumpSound;
+
 	Slime()
 	{
 		super();
 		rand = new Random();
 		count = 0;
-		
+		System.out.println("ini");
+		jumpSound = new MusicBox(new FileHandler(), "Slime.wav", false);
+
 	}
 
 	@Override
@@ -27,62 +31,39 @@ public class Slime extends Monster
 	@Override
 	public Dimension move(Room room, Dimension Position)
 	{
-		
-		
-		if(count == 3){
-			count = 0;
-		playerPos = room.getOccupyiedTile();
-		ArrayList<Dimension> validPositions = new ArrayList<Dimension>();
-		if (checkDimension(new Dimension(Position.width + 1, Position.height), room, Position))
-		{
-			validPositions.add(new Dimension(Position.width + 1, Position.height));
-		}
-		if (checkDimension(new Dimension(Position.width - 1, Position.height), room, Position))
-		{
-			validPositions.add(new Dimension(Position.width - 1, Position.height));
-		}
-		if (checkDimension(new Dimension(Position.width, Position.height + 1), room, Position))
-		{
-			validPositions.add(new Dimension(Position.width, Position.height + 1));
-		}
-		if (checkDimension(new Dimension(Position.width, Position.height - 1), room, Position))
-		{
-			validPositions.add(new Dimension(Position.width, Position.height - 1));
-		}
 
-		if (validPositions.size() != 0)
+		if (count == 3)
 		{
-			Dimension moveTo = validPositions.get(rand.nextInt(validPositions.size()));
-			return moveTo;
-		} else
-		{
-			ArrayList<Dimension> validPositions2 = new ArrayList<Dimension>();
-			if (checkDimensionEasier(new Dimension(Position.width + 1, Position.height), room, Position))
+			count = 0;
+			playerPos = room.getOccupyiedTile();
+			ArrayList<Dimension> validPositions = new ArrayList<Dimension>();
+			if (checkDimension(new Dimension(Position.width + 1, Position.height), room, Position))
 			{
 				validPositions.add(new Dimension(Position.width + 1, Position.height));
 			}
-			if (checkDimensionEasier(new Dimension(Position.width - 1, Position.height), room, Position))
+			if (checkDimension(new Dimension(Position.width - 1, Position.height), room, Position))
 			{
 				validPositions.add(new Dimension(Position.width - 1, Position.height));
 			}
-			if (checkDimensionEasier(new Dimension(Position.width, Position.height + 1), room, Position))
+			if (checkDimension(new Dimension(Position.width, Position.height + 1), room, Position))
 			{
 				validPositions.add(new Dimension(Position.width, Position.height + 1));
 			}
-			if (checkDimensionEasier(new Dimension(Position.width, Position.height - 1), room, Position))
+			if (checkDimension(new Dimension(Position.width, Position.height - 1), room, Position))
 			{
 				validPositions.add(new Dimension(Position.width, Position.height - 1));
 			}
 
 			if (validPositions.size() != 0)
 			{
-				Dimension moveTo = validPositions2.get(rand.nextInt(validPositions.size()));
+				Dimension moveTo = validPositions.get(rand.nextInt(validPositions.size()));
+				jumpSound.startThread();
 				return moveTo;
+			} else
+			{
+				return null;
 			}
-			else{
-			return null;}
-		}}
-		else
+		} else
 		{
 			count++;
 			return null;
@@ -93,18 +74,15 @@ public class Slime extends Monster
 	private boolean checkDimension(Dimension pos, Room room, Dimension ogPos)
 	{
 		Tile tile = room.getTile(pos);
-		return room.getTile(pos) != null && tile.canCross() && !tile.gethasMonster() && !tile.isInhabited() && !tile.getIsExit()
-				&& (Math.abs((int) (playerPos.getWidth() - pos.getWidth()))
-						+ Math.abs((int) (playerPos.getHeight() - pos.getHeight())) > (Math.abs((int) (playerPos.getWidth() - ogPos.getWidth()))
-								+ Math.abs((int) (playerPos.getHeight() - ogPos.getHeight()))));
+		return room.getTile(pos) != null && tile.canCross() && !tile.gethasMonster() && !tile.isInhabited() && !tile.getIsExit() && (Math.abs((int) (playerPos.getWidth() - pos.getWidth())) + Math
+		        .abs((int) (playerPos.getHeight() - pos.getHeight())) > (Math.abs((int) (playerPos.getWidth() - ogPos.getWidth())) + Math.abs((int) (playerPos.getHeight() - ogPos.getHeight()))));
 	}
+
 	private boolean checkDimensionEasier(Dimension pos, Room room, Dimension ogPos)
 	{
 		Tile tile = room.getTile(pos);
-		return tile != null && tile.canCross() && !tile.gethasMonster() && !tile.isInhabited() && !tile.getIsExit()
-				&& (Math.abs((int) (playerPos.getWidth() - pos.getWidth()))
-						+ Math.abs((int) (playerPos.getHeight() - pos.getHeight())) >= (Math.abs((int) (playerPos.getWidth() - ogPos.getWidth()))
-								+ Math.abs((int) (playerPos.getHeight() - ogPos.getHeight()))));
+		return tile != null && tile.canCross() && !tile.gethasMonster() && !tile.isInhabited() && !tile.getIsExit() && (Math.abs((int) (playerPos.getWidth() - pos.getWidth())) + Math
+		        .abs((int) (playerPos.getHeight() - pos.getHeight())) >= (Math.abs((int) (playerPos.getWidth() - ogPos.getWidth())) + Math.abs((int) (playerPos.getHeight() - ogPos.getHeight()))));
 	}
 
 }

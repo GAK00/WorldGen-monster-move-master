@@ -16,7 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class FileHandler implements Serializable
+public class FileHandler
 {
 
 	private File mainDirectory;
@@ -61,7 +61,7 @@ public class FileHandler implements Serializable
 	{
 		try
 		{
-			return getParentDirectory()+"/GameData/";
+			return getParentDirectory();
 		} catch (UnsupportedEncodingException e)
 		{
 			// TODO Auto-generated catch block

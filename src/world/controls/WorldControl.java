@@ -29,9 +29,9 @@ public class WorldControl
 	{
 
 		FileHandler fh = new FileHandler();
-		MusicBox music = new MusicBox(fh,"dank.wav",true);
-		//music.startThread();
-		//music.changeDc();
+		MusicBox music = new MusicBox("dank.wav",true);
+		music.startThread();
+		music.liveChangeDc(-20.0f);
 		if (fh.readMap() != null)
 		{
 			System.out.println("all good");

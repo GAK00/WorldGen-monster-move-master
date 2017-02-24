@@ -216,7 +216,6 @@ public class Room implements java.io.Serializable
 
 	public void setControlller(WorldControl controller)
 	{
-		System.out.println("asdfbasdfasdf");
 		this.control = controller;
 		
 	}

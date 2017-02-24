@@ -3,6 +3,9 @@ package world.model;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -11,50 +14,86 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class MusicBox implements Runnable,Serializable
+public class MusicBox implements Runnable, Serializable
 {
-	private Thread thread;
-	private FileHandler fileHandler;
+	private transient Thread thread;
 	private String fileName;
-	private Clip clip;
+	private transient Clip clip;
 	boolean loop;
+	float dc;
 
-	public MusicBox(FileHandler fileHandler, String fileName,boolean loop)
+	public MusicBox(String fileName, boolean loop)
 	{
-		this.fileHandler = fileHandler;
 		this.fileName = fileName;
 		this.loop = loop;
+		dc = 0;
 	}
-	
-	public void changeDc()
+	public MusicBox(String fileName, boolean loop,float dc)
 	{
-		try
-		{
-			thread.sleep(5000);
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-20.0f);
+		this.fileName = fileName;
+		this.loop = loop;
+		this.dc = dc;
 	}
+
+	public void deadChangeDc(float dc)
+	{
+		this.dc = dc;
+	}
+	public void liveChangeDc(float dc)
+	{
+		
+		if (clip!=null)
+		{FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(dc);
+		} else
+		{
+			Thread volumeThread = new Thread()
+			{
+				public void run()
+				{
+					
+					while (clip == null)
+					{
+						try
+						{
+							Thread.sleep(1000);
+						} catch (InterruptedException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+					FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+					gainControl.setValue(dc);
+				}
+			};
+			volumeThread.start();
+		}
+	}
+
 	public void run()
 	{
-		String file = fileHandler.getDirectory() + fileName;
 
 		AudioInputStream audio;
 		try
 		{
+			URL childPath = this.getClass().getResource("resources/" + fileName);
+			String file = URLDecoder.decode(childPath.getFile(), "UTF-8");
 			audio = AudioSystem.getAudioInputStream(new File(file));
 			Clip sound = AudioSystem.getClip();
 			clip = sound;
 			sound.open(audio);
+			FloatControl gainControl = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(-50.0f);
 			sound.start();
-			System.out.println("soundPlayed");
-			if(loop){
-			sound.loop(sound.LOOP_CONTINUOUSLY);}
-			
+			gainControl = (FloatControl) sound.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(dc);
+			if (loop)
+			{
+				sound.loop(sound.LOOP_CONTINUOUSLY);
+			}
+
 		} catch (UnsupportedAudioFileException | IOException e)
 		{
 			// TODO Auto-generated catch block
@@ -69,7 +108,6 @@ public class MusicBox implements Runnable,Serializable
 
 	public void startThread()
 	{
-		System.out.println("new Thread");
 		thread = new Thread(this, "MusicBox");
 		thread.start();
 	}

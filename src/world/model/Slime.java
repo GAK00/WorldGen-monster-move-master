@@ -18,7 +18,7 @@ public class Slime extends Monster
 		rand = new Random();
 		count = 0;
 		System.out.println("ini");
-		jumpSound = new MusicBox(new FileHandler(), "Slime.wav", false);
+		jumpSound = new MusicBox("slime.wav", false);
 
 	}
 

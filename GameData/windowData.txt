@@ -1,3 +1,3 @@
-windowWidth: 350
-windowHeight: 350
-windowPos: 0,23
+windowWidth: 1920
+windowHeight: 977
+windowPos: 0,23,52

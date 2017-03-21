@@ -9,11 +9,14 @@ public class Troll extends Monster
 {
 	private Random rand;
 	private int count;
+	private MusicBox growl;
 	public Troll()
 	{
 		super();
 		count = 0;
 		rand = new Random();
+		growl = new MusicBox("Troll.wav",false);
+		
 	}
 	
 	
@@ -49,6 +52,7 @@ public class Troll extends Monster
 		if(validPositions.size()!=0)
 		{
 			Dimension moveTo = validPositions.get(rand.nextInt(validPositions.size()));
+			growl.startThread();
 			return moveTo;
 		}
 		else

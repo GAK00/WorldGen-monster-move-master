@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import world.controls.WorldControl;
+import game.controller.GameController;
 
 public class Map implements java.io.Serializable
 {
@@ -13,9 +13,9 @@ public class Map implements java.io.Serializable
 	private Dimension currentPos;
 	private Dimension size;
 	private ArrayList<Room> areas;
-	private transient WorldControl control;
+	private transient GameController control;
 
-	public Map(WorldControl control)
+	public Map(GameController control)
 	{
 		rooms = new Rooms(control);
 		size = new Dimension(8, 5);
@@ -86,7 +86,7 @@ public class Map implements java.io.Serializable
 
 	}
 
-	public void setControl(WorldControl controller)
+	public void setControl(GameController controller)
 	{
 		this.control = controller;
 		for(Room room : areas)

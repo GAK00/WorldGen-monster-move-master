@@ -6,17 +6,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
-import world.controls.WorldControl;
+import dungeon.model.Troll;
+import game.controller.GameController;
 import world.model.HealthBar;
-import world.model.Map;
 import world.model.Room;
 
 public class WorldPanel extends JPanel
 {
 	private JLabel worldView;
-	WorldControl controller;
+	GameController controller;
 	private SpringLayout layout;
 	private int height;
 	private int width;
@@ -27,7 +30,7 @@ public class WorldPanel extends JPanel
 	private int miniState;
 	private boolean isRendering; 
 
-	public WorldPanel(WorldControl controller, int width, int heigth)
+	public WorldPanel(GameController controller, int width, int heigth)
 	{
 		super();
 		this.displayHealth = true;
@@ -59,7 +62,6 @@ public class WorldPanel extends JPanel
 
 	private void setupListeners()
 	{
-
 		this.addKeyListener(new KeyListener()
 		{
 
@@ -100,10 +102,12 @@ public class WorldPanel extends JPanel
 				}
 				if(pressed.getKeyCode() == KeyEvent.VK_R)
 				{
+					if(isVisible()){
 					controller.increaseHealth();
 					if(controller.getMap().getCurrentRoom().isAmbush())
 					{
-						System.out.println("ambush!!!!");
+						controller.startCombat(new Troll());
+					}
 					}
 				}
 				if(pressed.getKeyCode()== KeyEvent.VK_M)

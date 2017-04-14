@@ -1,19 +1,19 @@
 package world.model;
 
 import java.awt.Dimension;
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import world.controls.WorldControl;
+import game.controller.GameController;
+import game.model.MonsterConvert;
 
 public class Room implements java.io.Serializable
 {
 	private ArrayList<Tile> interior;
 	private Dimension roomDimension;
-	private transient WorldControl control;
+	private transient GameController control;
 	private double ambushChance;
 	private int restAmount;
 	private Random rand;
@@ -22,7 +22,7 @@ public class Room implements java.io.Serializable
 	private transient TimerTask updateMonsters;
 	Room room = this;
 
-	public Room(ArrayList<Tile> interior, Dimension roomDimension, WorldControl control)
+	public Room(ArrayList<Tile> interior, Dimension roomDimension, GameController control)
 	{
 		this.interior = interior;
 		this.roomDimension = roomDimension;
@@ -116,7 +116,7 @@ public class Room implements java.io.Serializable
 					getTile(nextPosition).setInhabited(true);
 					if (getTile(nextPosition).gethasMonster())
 					{
-						System.out.println("fight");
+						control.startCombat(MonsterConvert.convert(getTile(nextPosition).getMonsterType()));
 						getTile(nextPosition).setHasMonster(false);
 					}
 				}
@@ -214,7 +214,7 @@ public class Room implements java.io.Serializable
 		return discovered;
 	}
 
-	public void setControlller(WorldControl controller)
+	public void setControlller(GameController controller)
 	{
 		this.control = controller;
 		

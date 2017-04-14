@@ -1,5 +1,6 @@
 package world.controls;
 
+import game.controller.GameController;
 import world.model.MusicBox;
 
 public class WorldRunner
@@ -7,7 +8,7 @@ public class WorldRunner
 	public static void main(String[] args)
 	{
 		
-		WorldControl controller = new WorldControl();
+		GameController controller = new GameController();
 		controller.start();
 	}
 }

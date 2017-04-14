@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import world.controls.WorldControl;
+import game.controller.GameController;
 
 public class Rooms
 {
@@ -21,9 +21,9 @@ public class Rooms
 	private int[] down = { 0, 1 };
 	private Dimension standered = new Dimension(7, 7);
 	private Floor floor = new Floor(new Color(109, 109, 109));
-	private WorldControl control;
+	private GameController control;
 
-	public Rooms(WorldControl control)
+	public Rooms(GameController control)
 	{
 		this.control = control;
 	}
